@@ -1,0 +1,42 @@
+/* Base button styles */
+.base-button {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  color: var(--color-light);
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.base-button--hover:hover {
+  background-color: var(--color-hover);
+}
+
+.base-button--active:active {
+  transform: scale(0.98);
+}
+
+.base-button--large {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+}
+
+.base-button--small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.base-button--outlined {
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.base-button--disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  pointer-events: none;
+}

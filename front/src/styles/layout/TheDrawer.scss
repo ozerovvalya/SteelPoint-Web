@@ -1,0 +1,99 @@
+/* Drawer container */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 25%;
+  height: 100%;
+  background-color: var(--color-white);
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  z-index: 100;
+}
+
+.drawer__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer__close-button {
+  background: none;
+  font-size: 2rem;
+  cursor: pointer;
+  border: none;
+  align-self: flex-end;
+  line-height: 1;
+}
+
+.drawer__title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.drawer__empty {
+  color: var(--color-grey);
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.drawer__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 550px;
+  overflow-y: auto;
+
+  /* Firefox */
+  scrollbar-width: none;
+}
+/* Chrome, Safari, Opera */
+.drawer__list::-webkit-scrollbar {
+  display: none;
+}
+
+.drawer__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border, #ddd);
+}
+
+.drawer__item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.drawer__item-name {
+  font-weight: bold;
+}
+
+.drawer__item-price {
+  font-size: 0.95rem;
+}
+
+.drawer__item-subtotal {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.drawer__remove-button {
+  background: none;
+  color: crimson;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.25rem;
+  align-self: center;
+}
+
+.drawer__footer {
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  text-align: right;
+}
+
+.drawer__total {
+  font-weight: bold;
+}

@@ -1,0 +1,26 @@
+.product-list {
+  padding: 20px;
+  position: relative;
+
+  &__grid {
+    display: grid;
+    gap: 24px;
+
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__status {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+    padding: 16px;
+
+    &--error {
+      color: #c00;
+    }
+  }
+}

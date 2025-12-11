@@ -1,0 +1,8 @@
+.home {
+  flex: 1;
+  padding: 4rem 6rem;
+
+  @media (max-width: 768px) {
+    padding: 2rem 3rem;
+  }
+}

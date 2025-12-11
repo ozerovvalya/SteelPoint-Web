@@ -1,0 +1,105 @@
+/* === Base Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  background-color: #f5f7fa;
+  color: #1f1f1f;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+/* === Root Variables (colors and sizes) === */
+:root {
+  --color-primary: #2f3e46; /* dark steel */
+  --color-accent: #5b7c99;  /* steel blue */
+  --color-white: #ffffff;
+  --color-gray: #e0e0e0;
+  --color-black: #000000;
+  --color-shadow: rgba(0, 0, 0, 0.05);
+
+  --radius: 8px;
+  --transition: 0.3s ease;
+
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+}
+
+/* === Typography === */
+body {
+  line-height: var(--line-height-base);
+  font-size: var(--font-size-base);
+  background-color: var(--color-white);
+  color: var(--color-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  color: var(--color-primary);
+  margin-bottom: 0.5em;
+}
+
+a {
+  color: var(--color-black);
+  text-decoration: none;
+  transition: color var(--transition), text-decoration var(--transition);
+}
+a:hover {
+  text-decoration: underline;
+  color: var(--color-accent);
+}
+
+/* === Layout Helpers === */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* === Buttons === */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--transition);
+  font-weight: 600;
+  user-select: none;
+}
+.btn:hover,
+.btn:focus {
+  background-color: var(--color-accent);
+  outline: none;
+}
+
+/* === Card Style === */
+.card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 4px var(--color-shadow);
+  padding: 1rem;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px var(--color-shadow);
+}
+
+/* === Utility Classes === */
+.text-center {
+  text-align: center;
+}
+.mt-1 {
+  margin-top: 1rem;
+}
+.mb-1 {
+  margin-bottom: 1rem;
+}
