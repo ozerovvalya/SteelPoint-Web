@@ -1,6 +1,22 @@
 <template>
   <div>
-    <ProductFilter />
+    <div class="catalog-controls">
+      <ProductFilter />
+
+      <div class="currency-selector">
+        <label for="currency">Currency:</label>
+        <select id="currency" v-model="selectedCurrency">
+          <option value="EUR">EUR (€)</option>
+          <option value="USD">USD ($)</option>
+          <option value="GBP">GBP (£)</option>
+        </select>
+
+        <span v-if="currencyLoading">Loading exchange rates...</span>
+        <span v-if="currencyError" class="currency-selector__error">
+          Currency rates unavailable
+        </span>
+      </div>
+    </div>
 
     <div class="product-list">
       <div class="product-list__grid" v-if="!loading && !error && pagedProducts.length > 0">
@@ -8,6 +24,8 @@
           v-for="product in pagedProducts"
           :key="product.id"
           :product="product"
+          :currency="selectedCurrency"
+          :rates="currencyRates"
         />
       </div>
 
@@ -33,13 +51,26 @@ import { ref, computed, onMounted, watch, inject } from 'vue'
 import ProductCard from './ProductCard.vue'
 import ProductFilter from './ProductFilter.vue'
 import { fetchAllProducts } from '@/api/products.js'
+import { fetchCurrencyRates } from '@/api/currency.js'
+import { useCurrencyStore } from '@/store/currency.js'
+
+const currencyStore = useCurrencyStore()
 
 const products = ref([])
 const filteredProducts = ref([])
 const loading = ref(true)
 const error = ref(false)
-
+const currencyLoading = ref(false)
+const currencyError = ref(false)
 const currentPage = ref(1)
+
+const selectedCurrency = computed({
+  get: () => currencyStore.selectedCurrency,
+  set: value => currencyStore.setCurrency(value)
+})
+
+const currencyRates = computed(() => currencyStore.rates)
+
 const itemsPerPage = 20
 
 const filterCriteria = inject('filterCriteria')
@@ -59,13 +90,22 @@ onMounted(async () => {
   } finally {
     loading.value = false
   }
+
+  try {
+    currencyLoading.value = true
+    const currencyData = await fetchCurrencyRates()
+    currencyStore.setRates(currencyData.rates)
+  } catch (e) {
+    console.error('Currency API error:', e)
+    currencyError.value = true
+  } finally {
+    currencyLoading.value = false
+  }
 })
 
-// Apply filtering and sorting
 function applyFilters() {
   let result = [...products.value]
 
-  // Filter by type
   if (filterCriteria.value.type) {
     const selectedType = filterCriteria.value.type.toLowerCase()
     result = result.filter(p => {
@@ -74,7 +114,6 @@ function applyFilters() {
     })
   }
 
-  // Sort based on selected criteria
   switch (filterCriteria.value.sort) {
     case 'name-asc':
       result.sort((a, b) => a.name.localeCompare(b.name))
@@ -93,7 +132,6 @@ function applyFilters() {
   filteredProducts.value = result
 }
 
-// Watch for changes in filters or product list
 watch(
   () => [filterCriteria.value.type, filterCriteria.value.sort, products.value],
   () => {
@@ -122,6 +160,36 @@ const pagedProducts = computed(() => {
 <style scoped lang="scss">
 @import '../../styles/product/ProductList.scss';
 
+.catalog-controls {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 80px 0 40px;
+  flex-wrap: wrap;
+}
+.currency-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-bottom: 20px;
+
+  label {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  select {
+    min-width: 160px;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  &__error {
+    color: red;
+    font-size: 14px;
+  }
+}
 .pagination {
   display: flex;
   justify-content: center;
@@ -140,7 +208,6 @@ const pagedProducts = computed(() => {
     }
   }
 }
-
 .product-list__status {
   text-align: center;
   margin-top: 20px;

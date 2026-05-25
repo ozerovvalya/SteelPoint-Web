@@ -1,4 +1,3 @@
-// router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/components/views/HomeView.vue'
 import FavoritesView from '@/components/views/FavoritesView.vue'

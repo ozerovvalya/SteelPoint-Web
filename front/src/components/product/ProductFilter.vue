@@ -1,22 +1,22 @@
 <template>
   <div class="product-filter">
-    <label>
-      Filter by type:
-      <select v-model="filterCriteria.type">
+    <div class="product-filter__item">
+      <label for="type-filter">Filter by type:</label>
+      <select id="type-filter" v-model="filterCriteria.type">
         <option value="">All types</option>
         <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
       </select>
-    </label>
+    </div>
 
-    <label>
-      Sort by:
-      <select v-model="filterCriteria.sort">
+    <div class="product-filter__item">
+      <label for="sort-filter">Sort by:</label>
+      <select id="sort-filter" v-model="filterCriteria.sort">
         <option value="name-asc">Name A → Z</option>
         <option value="name-desc">Name Z → A</option>
         <option value="price-asc">Price ↑</option>
         <option value="price-desc">Price ↓</option>
       </select>
-    </label>
+    </div>
   </div>
 </template>
 
@@ -35,4 +35,24 @@ const types = ["Knives", "Fixed", "Multitools", "Machete", "Axe", "Shovel", "Cro
 <style scoped lang="scss">
 @import '../../styles/product/ProductFilter.scss';
 
+.product-filter {
+  display: flex;
+  align-items: flex-end;
+  gap: 28px;
+}
+.product-filter__item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  select {
+    min-width: 160px;
+    padding: 8px 12px;
+    font-size: 16px;
+  }
+}
 </style>

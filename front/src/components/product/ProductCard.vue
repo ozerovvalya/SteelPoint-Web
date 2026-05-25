@@ -4,7 +4,7 @@
       <router-link :to="`/product/${product.id}`" class="product-card__link">
         <img :src="product.image" :alt="product.name" class="product-card__image" />
         <h3 class="product-card__name">{{ product.name }}</h3>
-        <p class="product-card__price">{{ product.price }} €</p>
+        <p class="product-card__price">{{ formattedPrice }}</p>
       </router-link>
 
       <p class="product-card__description" :class="{ visible: hover }">
@@ -32,10 +32,18 @@ import { ref, computed } from 'vue'
 import { useCartStore } from '@/store/drawer.js'
 import { useFavoritesStore } from '@/store/favorites.js'
 
-const { product } = defineProps({
+const props = defineProps({
   product: {
     type: Object,
     required: true
+  },
+  currency: {
+    type: String,
+    default: 'EUR'
+  },
+  rates: {
+    type: Object,
+    default: () => ({})
   }
 })
 
@@ -43,15 +51,39 @@ const hover = ref(false)
 const cart = useCartStore()
 const favorites = useFavoritesStore()
 
+const formattedPrice = computed(() => {
+  const price = Number(props.product.price)
+
+  if (props.currency === 'EUR') {
+    return `${price.toFixed(2)} €`
+  }
+
+  const rate = props.rates[props.currency]
+
+  if (!rate) {
+    return `${price.toFixed(2)} €`
+  }
+
+  const convertedPrice = price * rate
+
+  if (props.currency === 'USD') {
+    return `$${convertedPrice.toFixed(2)}`
+  }
+  if (props.currency === 'GBP') {
+    return `£${convertedPrice.toFixed(2)}`
+  }
+  return `${price.toFixed(2)} €`
+})
+
 const addToCart = () => {
-  cart.addToCart(product)
+  cart.addToCart(props.product)
 }
 
 const toggleFavorite = () => {
-  favorites.toggleFavorite(product)
+  favorites.toggleFavorite(props.product)
 }
 
-const isFavorite = computed(() => favorites.isFavorite(product.id))
+const isFavorite = computed(() => favorites.isFavorite(props.product.id))
 </script>
 
 <style scoped lang="scss">
